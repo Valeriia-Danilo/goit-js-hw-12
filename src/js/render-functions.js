@@ -4,9 +4,11 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
 export const list = document.querySelector(".js-gallery");
+export const loadMoreBtn = document.querySelector('.js-load-more');
+export const loader = document.querySelector(".js-loader-container");
 
 export function createMarkup(arr) {
-   return arr.map(({ largeImageURL, webformatURL, tags, likes, views, comments, downloads }) =>
+   const markup = arr.map(({ largeImageURL, webformatURL, tags, likes, views, comments, downloads }) =>
         `<li class="gallery-item js-gallery-item">
 	<a class="gallery-link js-gallery-link" href="${largeImageURL
 }">
@@ -14,8 +16,6 @@ export function createMarkup(arr) {
 			class="gallery-image js-gallery-image" 
 			src="${webformatURL}" 
 			alt="${tags}" 
-                width=340
-                height=200
 			/>
 	</a>
     <ul class="inform-container">
@@ -37,7 +37,8 @@ export function createMarkup(arr) {
     </li>
     </ul>
 </li>`).join("");
-    
+   
+    list.insertAdjacentHTML("beforeend", markup);
 }
 
 
@@ -61,4 +62,34 @@ export const lightbox = new SimpleLightbox('.js-gallery a', {
     scrollZoom: false,
 });
 
-lightbox.on('show.simplelightbox', function () {});
+lightbox.on('show.simplelightbox', function () { });
+
+export const showEndOfResultsMessage = () => {
+iziToast.warning({
+        message: 'We are sorry, but you have reached the end of search results.',
+        backgroundColor: '#ef6c40',
+        maxWidth: 432,
+        timeout: 3000,
+        messageColor: 'ef6c40',
+        messageSize: '16',
+        theme: 'dark',
+        progressBarColor: '#ab360e',
+        position: 'topRight',
+    });
+};
+
+export const toggleLoadMoreButton = (show) => {
+  if (show) {
+    loadMoreBtn.classList.remove('hidden');
+  } else {
+    loadMoreBtn.classList.add('hidden');
+  }
+};
+
+export const toggleLoader = (show) => {
+  if (show) {
+    loader.classList.remove('hidden');
+  } else {
+    loader.classList.add('hidden');
+  }
+};
